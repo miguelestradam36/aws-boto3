@@ -1,11 +1,26 @@
 class AWSManager():
 
     os = __import__('os')
-    logging = __import__('boto3')
+    boto3_ = __import__('boto3')
     botocore = __import__('logging')
+    connection_state = False
 
     def __init__(self):
-        print("Initiating connection...")\
+        print("Initiating connection...")
+        self.secrets_log_in(yaml_based=True)
+
+    @property
+    def secrets_log_in(self):
+        return self.connection_state
+
+    @secrets_log_in.setter
+    def secrets_log_in(self, yaml_based:bool=True, access_keys:list=None)->None:
+        client = self.boto3_.client(
+            's3',
+            aws_access_key_id=ACCESS_KEY,
+            aws_secret_access_key=SECRET_KEY,
+            aws_session_token=SESSION_TOKEN
+        )
 
     @property
     def upload_file(self):
