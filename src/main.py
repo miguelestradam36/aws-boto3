@@ -1,8 +1,9 @@
 from modules.aws.connector import AWSManager
-import yaml, os
+import os
 if __name__ == "__main__":
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    current_dir += '\config\credentials.yaml'
+    credentials = current_dir + '\config\credentials.yaml'
+    file = current_dir + '\data\files\andean-dev.jfif'
     buff = AWSManager()
-    result = buff.secrets_log_in(current_dir)
-    print("Main script")
+    result = buff.secrets_log_in(credentials)
+    upload = buff.upload_file(file,"","")
