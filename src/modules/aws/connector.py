@@ -1,5 +1,8 @@
+import yaml
 class AWSManager():
-
+    ACCESS_KEY = ""
+    SECRET_KEY = ""
+    SESSION_TOKEN = ""
     os = __import__('os')
     boto3_ = __import__('boto3')
     botocore = __import__('logging')
@@ -17,9 +20,9 @@ class AWSManager():
     def secrets_log_in(self, yaml_based:bool=True, access_keys:list=None)->None:
         client = self.boto3_.client(
             's3',
-            aws_access_key_id=ACCESS_KEY,
-            aws_secret_access_key=SECRET_KEY,
-            aws_session_token=SESSION_TOKEN
+            aws_access_key_id=self.ACCESS_KEY,
+            aws_secret_access_key=self.SECRET_KEY,
+            aws_session_token=self.SESSION_TOKEN
         )
 
     @property
