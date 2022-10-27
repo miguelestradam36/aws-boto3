@@ -5,27 +5,29 @@ class AWSManager():
     os = __import__('os')
     boto3_ = __import__('boto3')
     botocore = __import__('logging')
-    connection_state = False
 
     def __init__(self):
         print("Initiating connection...")
-        self.secrets_log_in()
 
     @property
-    def secrets_log_in(self)->bool:
-        return self.connection_state
+    def secrets_log_in(self):
+        if self.client is not None:
+            return "Connection successful"
 
     @secrets_log_in.setter
-    def secrets_log_in(self, access_keys:str)->None:
+    def secrets_log_in(self, filepath:str)->None:
         try:
             #yaml credentials
             import yaml
             from yaml.loader import SafeLoader
-            with open('Userdetails.yaml') as f:
+            with open(filepath) as f:
                 data = yaml.load(f, Loader=SafeLoader)
                 self.ACCESS_KEY = data["default"]["services"]["aws"]["aws_access_key_id"]
+                print("ACCESS KEY: {}".format(self.ACCESS_KEY))
                 self.SECRET_KEY = data["default"]["services"]["aws"]["aws_secret_access_key"]
+                print("SECRET ACCESS KEY: {}".format(self.ACCESS_KEY))
                 self.SESSION_TOKEN = data["default"]["services"]["aws"]["aws_session_token"]
+                print("SESSION TOKEN: {}".format(self.ACCESS_KEY))
             #client
             self.client = self.boto3_.client(
                 's3',
@@ -33,12 +35,11 @@ class AWSManager():
                 aws_secret_access_key=self.SECRET_KEY,
                 aws_session_token=self.SESSION_TOKEN
             )
-            self.connection_state = True
         except Exception as error:
-            self.connection_state = False
+            print("ERROR: {}".format(error))
 
     @property
-    def upload_file(self)->bool:
+    def upload_file(self):
         """
         Getter method, which is used to define the config file path.
         """
@@ -59,10 +60,10 @@ class AWSManager():
             object_name = self.os.path.basename(file_name)
 
         # Upload the file
-        s3_client = self.boto3.client('s3')
+        self.client = self.boto3.client('s3')
         from botocore.exceptions import ClientError
         try:
-            response = s3_client.upload_file(file_name, bucket, object_name)
+            response = self.client.upload_file(file_name, bucket, object_name)
             self.upload_file_state_ = True
             return self.upload_file_state_
         except ClientError as e:
