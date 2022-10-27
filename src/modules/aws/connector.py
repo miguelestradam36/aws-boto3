@@ -2,23 +2,19 @@ class AWSManager():
     ACCESS_KEY = ""
     SECRET_KEY = ""
     SESSION_TOKEN = ""
-    os = __import__('os')
-    boto3_ = __import__('boto3')
-    botocore = __import__('logging')
-
     def __init__(self):
         print("Initiating connection...")
 
     @property
     def secrets_log_in(self):
-        if self.client is not None:
-            return "Connection successful"
+        return self.client
 
     @secrets_log_in.setter
     def secrets_log_in(self, filepath:str)->None:
         try:
             #yaml credentials
             import yaml
+            import boto3
             from yaml.loader import SafeLoader
             with open(filepath) as f:
                 data = yaml.load(f, Loader=SafeLoader)
@@ -29,12 +25,14 @@ class AWSManager():
                 self.SESSION_TOKEN = data["default"]["services"]["aws"]["aws_session_token"]
                 print("SESSION TOKEN: {}".format(self.ACCESS_KEY))
             #client
-            self.client = self.boto3_.client(
+            client = boto3.client(
                 's3',
                 aws_access_key_id=self.ACCESS_KEY,
                 aws_secret_access_key=self.SECRET_KEY,
                 aws_session_token=self.SESSION_TOKEN
             )
+            self.client = client
+            return client
         except Exception as error:
             print("ERROR: {}".format(error))
 
