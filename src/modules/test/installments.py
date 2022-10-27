@@ -1,3 +1,8 @@
+import pytest
+
 def installation():
-    assert __import__("boto3")
-    assert __import__("pyyaml")
+    try:
+        assert __import__("boto3")
+        assert __import__("yaml")
+    except:
+        raise SystemExit(1)
