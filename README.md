@@ -1,6 +1,6 @@
 # AWS SDK Automation
 
-    Boto3 module usage for python-aws sdk and MAKE GNU for shell scripting  :new_moon:
+    Boto3 module usage for python-aws sdk and MAKE GNU for shell scripting
 
 ### Automate the scripting and management of some features in AWS  :page_with_curl:
 
