@@ -5,7 +5,6 @@ class AWSManager():
     def secrets_log_in(self, filepath:str)->None:
         #yaml credentials
         import yaml
-        import boto3
         from yaml.loader import SafeLoader
         with open(filepath, 'r') as f:
             data = yaml.load(f, Loader=SafeLoader)
@@ -16,6 +15,9 @@ class AWSManager():
             self.SESSION_TOKEN = data["default"]["services"]["aws"]["aws_session_token"]
             print("SESSION TOKEN: {}".format(self.ACCESS_KEY))
         #client
+
+    def establish_connection(self):
+        import boto3
         self.client = boto3.client(
             's3',
             aws_access_key_id=self.ACCESS_KEY,
@@ -31,25 +33,29 @@ class AWSManager():
         return self.response
 
     @upload_file.setter
-    def upload_file(self, file_name:str, bucket:str, object_name:str=None)->None:
+    def upload_file(self, file_name:str):
         import os
-        from botocore.exceptions import ClientError
         # If S3 object_name was not specified, use file_name
-        if object_name is None:
-            object_name = self.os.path.basename(file_name)
-
+        object_name = os.path.basename(file_name)
         # Upload the file
-        self.client = self.boto3.client('s3')
-        from botocore.exceptions import ClientError
-        self.response = self.client.upload_file(file_name, bucket, object_name)
+        self.response = self.client.upload_file(file_name, self.bucket_name, object_name)
 
     @property
     def download_file(self):
         return self.response
 
     @download_file.setter
-    def download_file(self, file_name:str, bucket:str, object_name:str=None)->None:
+    def download_file(self, file_name:str, bucket:str, object_name:str=None):
         self.response = self.client.download_file(
             "bucket-name", "key-name", "tmp.txt",
             ExtraArgs={"VersionId": "my-version-id"}
         )
+
+    @property
+    def set_bucket_name(self):
+        return self.bucket_name
+
+    @download_file.setter
+    def download_file(self, bucket_name:str):
+        self.set_bucket_name = bucket_name
+        

@@ -6,4 +6,5 @@ if __name__ == "__main__":
     file = current_dir + '\config\requirements.txt'
     buff = AWSManager()
     result = buff.secrets_log_in(credentials)
+    buff.establish_connection()
     upload = buff.upload_file(file,"test_bucket")
