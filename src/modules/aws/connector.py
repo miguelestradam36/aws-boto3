@@ -5,6 +5,7 @@ class AWSManager():
     def secrets_log_in(self, filepath:str)->None:
         #yaml credentials
         import yaml
+        from botocore.exceptions import ClientError
         import boto3
         from yaml.loader import SafeLoader
         with open(filepath, 'r') as f:
@@ -39,7 +40,35 @@ class AWSManager():
         :param object_name: S3 object name. If not specified then file_name is used
         :return: True if file was uploaded, else False
         """
+        import os
+        from botocore.exceptions import ClientError
+        # If S3 object_name was not specified, use file_name
+        if object_name is None:
+            object_name = self.os.path.basename(file_name)
 
+        # Upload the file
+        self.client = self.boto3.client('s3')
+        from botocore.exceptions import ClientError
+        self.response = self.client.upload_file(file_name, bucket, object_name)
+
+    @property
+    def upload_file_url(self):
+        """
+        Getter method, which is used to define the config file path.
+        """
+        return self.response
+
+    @upload_file_url.setter
+    def upload_file_url(self, file_name:str, bucket:str, object_name:str=None)->None:
+        """Upload a file to an S3 bucket
+
+        :param file_name: File to upload
+        :param bucket: Bucket to upload to
+        :param object_name: S3 object name. If not specified then file_name is used
+        :return: True if file was uploaded, else False
+        """
+        import os
+        from botocore.exceptions import ClientError
         # If S3 object_name was not specified, use file_name
         if object_name is None:
             object_name = self.os.path.basename(file_name)
