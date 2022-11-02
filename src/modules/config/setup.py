@@ -15,22 +15,10 @@ class SetUpExecuter():
         logging.basicConfig(level=logging.INFO)
         self.log = logging.getLogger(__name__) #<<<<<<<<<<<<<<<<<<<<
         self.log.addHandler(fileHandler)
+
         self.read_defaults()
-        self.global_installs()
         self.install_test_modules()
         self.install_services()
-        self.install_api_modules()
-
-    def global_installs(self)->None:
-        print("Checking in to global installations...")
-
-        for module in self.yaml_config["python"]["global"]["modules"]["standard"]:
-            try:
-                self.log.info("Checking {} module into venv".format(module["import"]))
-                assert __import__(module["import"])
-            except ImportError as error:
-                self.log.info("Installing {} module into venv".format(module["install"]))
-                self.os.system("{} pip install {}".format(self.venv_prefix, module["install"]))
 
     def install_services(self)->None:
         print("Checking in to api-connection and app installations...")

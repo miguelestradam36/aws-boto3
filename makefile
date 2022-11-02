@@ -14,15 +14,15 @@ TEST_PATH = ${current_dir}\src\test\test_installments.py
 
 .PHONY: awscript
 awscript: ## Running main python scripts of the program
-	@python {APP_PATH}
+	@python ${APP_PATH}
 	@echo FINISHED AWS SCRIPTS MAKE PROCESS
 .PHONY: awscript
 awscriptest: ## Running main python scripts of the program
-	@pip install -r {SETUP_PATH} --quiet
+	@pip install -r ${SETUP_PATH} --quiet
 	@echo Packages installed...
 .PHONY: awscript
 awscriptinstall: ## Running main python scripts of the program
-	@pytest {TEST_PATH}
+	@pytest ${TEST_PATH}
 	@echo Test Process FINISHED
 
 ##############################################################################################
