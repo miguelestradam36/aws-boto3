@@ -3,14 +3,22 @@ import sys
 import threading
 
 class ProgressPercentage(object):
-
+    """
+    Built-in Methods
+    """
     def __init__(self, filename):
+        """
+        
+        """
         self._filename = filename
         self._size = float(os.path.getsize(filename))
         self._seen_so_far = 0
         self._lock = threading.Lock()
 
     def __call__(self, bytes_amount):
+        """
+        
+        """
         # To simplify, assume this is hooked up to a single filename
         with self._lock:
             self._seen_so_far += bytes_amount
@@ -22,12 +30,21 @@ class ProgressPercentage(object):
             sys.stdout.flush()
 
 class AWSManager():
-    ACCESS_KEY = ""
-    SECRET_KEY = ""
-    SESSION_TOKEN = ""
-    logging = __import__('logging')
-    response = 'Action not performed'
+    """
+    Attributes
+    """
+    ACCESS_KEY = "" # access key for AWS
+    SECRET_KEY = "" # secret key for AWS
+    SESSION_TOKEN = "" # session token for AWS
+    logging = __import__('logging') # attribute using imported module
+    response = 'Action not performed' # flag for request
+    """
+    Methods
+    """
     def __init__(self):
+        """
+        
+        """
         import logging
         logFileFormatter = logging.Formatter(
             fmt=f"%(levelname)s %(asctime)s (%(relativeCreated)d) \t %(pathname)s F%(funcName)s L%(lineno)s - %(message)s",
