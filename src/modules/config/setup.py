@@ -3,7 +3,7 @@ class SetUpExecuter():
     Attributes
     ---
     """
-    filepath = "..\\..\\config\\defaults.yaml" # default filepath for configuration
+    filepath = "../../config/defaults.yaml" # default filepath for configuration
     venv_prefix = "python" #prefix for operations (not currently using venv, but can be done)
     os = __import__('os') # os module as attribute
     log = __import__('logging') #logging module as attribute
